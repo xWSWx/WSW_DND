@@ -1,0 +1,49 @@
+# General node_modules
+**/node_modules
+**/npm-debug.log
+**/yarn-error.log
+
+# Logs
+logs
+*.log
+logs/*
+
+# Dependency directories
+bower_components
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# Folder: ExpressServer
+ExpressServer/node_modules
+ExpressServer/npm-debug.log
+ExpressServer/.env
+ExpressServer/obj
+
+# Folder: NetCoreApi
+NetCoreApi/bin
+NetCoreApi/obj
+NetCoreApi/.vs
+NetCoreApi/*.db
+NetCoreApi/appsettings*.json
+NetCoreApi/secrets.json
+
+# Folder: vueclient
+vueclient/node_modules
+vueclient/dist
+vueclient/.env.*
+vueclient/.temp
+vueclient/*.local
+vueclient/npm-debug.log*
+vueclient/yarn-error.log*
+vueclient/tests/e2e/reports
+vueclient/obj
+
+# Folder: Starter
+Starter/node_modules
+Starter/npm-debug.log
+Starter/.env
+Starter/bin
+# VisualStudio
+.vs/

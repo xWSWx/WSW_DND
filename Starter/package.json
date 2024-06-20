@@ -1,0 +1,20 @@
+{
+  "name": "starter",
+  "version": "0.0.0",
+  "description": "Starter",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "start-all": "node start-all.js",
+    "start-express": "node start-express.js",
+    "start-aspnetcore": "node start-aspnetcore.js",
+    "start-vue": "node start-vue.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0"
+  },
+  "eslintConfig": {
+  }
+}
