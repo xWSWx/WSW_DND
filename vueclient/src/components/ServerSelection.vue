@@ -1,25 +1,24 @@
+<script setup>
+    import { ref, defineEmits } from 'vue';
+    import { selectedServer } from '../selectedServer';
+    import { DOTNET_SERVER, EXPRESS_SERVER } from '../config';
+    // Define the events that this component will emit
+    const emit = defineEmits(['server-selected']);
 
+    const servers = ref([
+        { name: 'ASP.NET Core Web API', address: 'https://localhost:7210', api: DOTNET_SERVER   },
+        { name: 'Express.js Server'   , address: 'http://localhost:3000' , api: EXPRESS_SERVER }
+        // Add more servers as needed
+    ]);
 
-<script>
-    export default {
-        data() {
-            return {
-                servers: [
-                    { name: 'ASP.NET Core Web API', address: 'https://localhost:7210' },
-                    { name: 'Express.js Server', address: 'http://localhost:3000' }
-                    // Add more servers as needed
-                ],
-                selectedServer: null
-            };
-        },
-        methods: {
-            confirmServer() {
-                if (this.selectedServer) {
-                    this.$emit('server-selected', this.selectedServer); // Emit event to parent component
-                } else {
-                    alert('Please select a server.');
-                }
-            }
+    const localSelectedServer = ref(null);
+
+    const confirmServer = () => {
+        if (localSelectedServer.value) {
+            emit('server-selected', localSelectedServer.value);             
+            selectedServer.value = localSelectedServer.value.api; 
+        } else {
+            alert('Please select a server.');
         }
     };
 </script>
@@ -28,8 +27,8 @@
     <div>
         <h2>Select a Server</h2>
         <div class="server-options">
-            <label v-for="(server, index) in servers" :key="index" class="server-option"> 
-                <input type="radio" v-model="selectedServer" :value="server"> {{ server.name }}
+            <label v-for="(server, index) in servers" :key="index" class="server-option">
+                <input type="radio" v-model="localSelectedServer" :value="server"> {{ server.name }} ({{ server.api }})
             </label>
         </div>
         <button @click="confirmServer">Confirm Server</button>

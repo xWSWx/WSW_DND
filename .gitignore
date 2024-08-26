@@ -22,12 +22,20 @@ ExpressServer/.env
 ExpressServer/obj
 
 # Folder: NetCoreApi
-NetCoreApi/bin
-NetCoreApi/obj
-NetCoreApi/.vs
-NetCoreApi/*.db
-NetCoreApi/appsettings*.json
-NetCoreApi/secrets.json
+DND.NETCore.API/bin
+DND.NETCore.API/obj
+DND.NETCore.API/.vs
+DND.NETCore.API/*.db
+
+DND.NETCore.Application/bin
+DND.NETCore.Application/obj
+DND.NETCore.Application/.vs
+
+DND.NETCore.Core/bin
+DND.NETCore.Core/obj
+
+DND.NETCore.DataAccess/obj
+DND.NETCore.DataAccess/bin
 
 # Folder: vueclient
 vueclient/node_modules

@@ -2,18 +2,24 @@
     import { ref } from 'vue';
     import ServerSelection from './components/ServerSelection.vue';
     import ItemList from './components/ItemList.vue';
+    import CharacterList from './components/CharacterList.vue'
 
-    const selectedServer = ref(null);
+    const isServerSelected = ref(false);
 
     const handleServerSelected = (server) => {
-        selectedServer.value = server;
+        //console.log("serevr in 'App.vue':");
+        //console.log(server);
+        //selectedServer.value = server;
+        isServerSelected.value = true;
     };
 </script>
 
 <template>
     <div id="app">
-        <ServerSelection v-if="!selectedServer" @server-selected="handleServerSelected" />
-        <ItemList v-if="selectedServer" :server="selectedServer" />
+        <!--<ServerSelection v-if="!isServerSelected" @server-selected="handleServerSelected" />-->
+        <ServerSelection @server-selected="handleServerSelected" />
+        <!--<ItemList v-if="isServerSelected" />-->
+        <CharacterList v-if="isServerSelected" />
     </div>
 </template>
 

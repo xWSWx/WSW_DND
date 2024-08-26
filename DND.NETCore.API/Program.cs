@@ -1,11 +1,24 @@
+using DND.NETCore.Application.Services;
+using DND.NETCore.Core.Abstractions;
+using DND.NETCore.DataAccess;
+using DND.NETCore.DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<DND_DbContext>(
+    options => 
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(DND_DbContext)));
+    });
+
+builder.Services.AddScoped<ICharactersService, CharactersService>();
+builder.Services.AddScoped<ICharactersRepository, CharactersRepository>();
+
 builder.Services.AddCors(options => 
 {
     options.AddPolicy("AllowVueApp",
@@ -23,10 +36,15 @@ builder.Services.AddCors(options =>
             builder.WithOrigins("https://localhost:5173") // Vue app's URL
                    .AllowAnyHeader()
                    .AllowAnyMethod();
+            builder.WithOrigins("https://localhost") 
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+            builder.WithOrigins("http://localhost") 
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
         });
 });
 
-// Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();

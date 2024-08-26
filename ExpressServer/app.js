@@ -1,25 +1,59 @@
-var createError = require('http-errors');
-var express = require('express');
+const express = require('express');
+const cors = require('cors');
+//const { swaggerUi, swaggerSpec } = require('./config/swagger');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+var bodyParser = require('body-parser')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const cors = require('cors');
+const session = require('express-session');
+const passport = require('./auth');
+
+const createError = require('http-errors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
+const charactersRoutes = require('./routes/charactersRoutes');
+const sequelize = require('./config/sequelize');
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Middleware
+app.use(bodyParser.json());
 app.use(logger('dev'));
+
+// Swagger setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Routes
+app.use('/api/characters', charactersRoutes);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.post('/login', passport.authenticate('local'), (req, res) => {
+    res.send({ id: req.user.id, username: req.user.username });
+});
+
+app.post('/logout', (req, res) => {
+    req.logout(err => {
+        if (err) { return next(err); }
+        res.sendStatus(200);
+    });
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -40,6 +74,7 @@ if (items.length > 0) {
     items[0].current = true;
 }
 
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/api/items', (req, res) => {
     res.json(items);
 });
@@ -70,6 +105,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
+sequelize.sync().then(() => {
+    /*app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });*/
+});
 
 module.exports = app;

@@ -1,0 +1,120 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Express API",
+    "description": "API documentation for the Express server"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Characters",
+      "description": "API for characters in the DND universe"
+    }
+  ],
+  "schemes": [ "http" ],
+  "paths": {
+    "/characters": {
+      "get": {
+        "tags": [ "Characters" ],
+        "summary": "Get all characters",
+        "operationId": "getCharacters",
+        "produces": [ "application/json" ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Characters" ],
+        "summary": "Create a new character",
+        "operationId": "createCharacter",
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "character",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CharacterRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Character created"
+          }
+        }
+      }
+    },
+    "/characters/{id}": {
+      "put": {
+        "tags": [ "Characters" ],
+        "summary": "Update a character",
+        "operationId": "updateCharacter",
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "character",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CharacterRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Character updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": [ "Characters" ],
+        "summary": "Delete a character",
+        "operationId": "deleteCharacter",
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Character deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CharacterRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "initiative": {
+          "type": "integer"
+        },
+        "current": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

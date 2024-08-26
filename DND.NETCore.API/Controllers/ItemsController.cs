@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DND.NETCore.Core.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreApi.Models;
 namespace NetCoreApi.Controllers
@@ -7,11 +8,11 @@ namespace NetCoreApi.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private static readonly List<Item> Items = new List<Item>
+        private static readonly List<Character> Items = new List<Character>
         {
-            new Item { Id = 1, Name = "Item 1", Initiative = 3, Current = false },
-            new Item { Id = 2, Name = "Item 2", Initiative = 1, Current = false },
-            new Item { Id = 3, Name = "Item 3", Initiative = 2, Current = false }
+            Character.Create(Guid.NewGuid(), "Item 1", "Description 1", 3, false).Character,
+            Character.Create(Guid.NewGuid(), "Item 2", "Description 2", 2, false).Character,
+            Character.Create(Guid.NewGuid(), "Item 3", "Description 3", 1, false).Character
         };
 
         private static int currentIndex = 0;
@@ -28,13 +29,13 @@ namespace NetCoreApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> Get()
+        public ActionResult<IEnumerable<Character>> Get()
         {
             return Items;
         }
 
         [HttpPost("next")]
-        public ActionResult<int> NextItem()
+        public ActionResult<Guid> NextItem()
         {
             if (Items.Any())
             {
