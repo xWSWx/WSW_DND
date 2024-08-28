@@ -2,36 +2,27 @@
     import { ref, watch, onMounted } from 'vue';
     import CHARACTER_REQUESTS from '../api/Characters';
     import { selectedServer } from '../selectedServer';
-    import Character from './CharacterItem.vue';
-
-    const normalizeCharacter = (character) => {
-        return {
-            id: character.id || character.Id,
-            name: character.name || character.Name,
-            description: character.description || character.Description,
-            initiative: character.initiative || character.Initiative,
-            current: character.current || character.Current
-        };
-    };
-
+    import CharacterItem from './CharacterItem.vue';
+    import Character from '@/models/Character'; // Import the Character model
 
     const items = ref([]);
     const currentItemId = ref(null);
 
-    const fetchCharacters = async () =>     
-    {
-        fetch(CHARACTER_REQUESTS.value.ListRequest) 
-        .then(response => response.json())
-        .then(data =>                 
-        {
-            items.value = data.map(normalizeCharacter);
-            const currentItem = data.find(item => item.current);
-            if (currentItem)                     
-            {
-                currentItemId.value = currentItem.id; 
-            }
-        });
-    };
+    const fetchCharacters = () => {
+        fetch(CHARACTER_REQUESTS.value.ListRequest)
+            .then(response => response.json())
+            .then(data => {                
+                items.value = data.map(characterData => new Character(characterData));
+                
+                const currentItem = items.value.find(item => item.current);
+                if (currentItem) {
+                    currentItemId.value = currentItem.id;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching characters:', error);
+            });
+    };    
 
     watch(selectedServer, fetchCharacters);    
     onMounted(fetchCharacters);
@@ -39,12 +30,9 @@
            
 <template>
     <div>
-        <!--<h2>Character List for {{ server.name }} ( {{server.address}} )</h2>-->
-        <h2>Character List for </h2>
+        <h2>Character List</h2>
         <ul>
-            <Character v-for="item in items"
-                       :key="item.id"
-                       :character="item" />
+            <CharacterItem v-for="item in items" :key="item.id" :character="item" />
         </ul>
     </div>
 </template>

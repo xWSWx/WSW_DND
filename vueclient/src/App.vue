@@ -1,26 +1,35 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
     import ServerSelection from './components/ServerSelection.vue';
-    import ItemList from './components/ItemList.vue';
     import CharacterList from './components/CharacterList.vue'
+    import ThemeSelector from './components/ThemeSelector.vue';
+    import { useTheme } from 'vuetify';
+    const { global } = useTheme();
+    const selectedTheme = ref('light');
 
+    const changeTheme = (theme) => {
+        console.log(global.name.value);
+        global.name.value = theme;
+        console.log(global.current.value.colors);
+    };
+    
     const isServerSelected = ref(false);
-
     const handleServerSelected = (server) => {
-        //console.log("serevr in 'App.vue':");
-        //console.log(server);
-        //selectedServer.value = server;
         isServerSelected.value = true;
     };
+    watch(selectedTheme, (newTheme) => {
+        changeTheme(newTheme);
+    });
 </script>
 
 <template>
-    <div id="app">
-        <!--<ServerSelection v-if="!isServerSelected" @server-selected="handleServerSelected" />-->
-        <ServerSelection @server-selected="handleServerSelected" />
-        <!--<ItemList v-if="isServerSelected" />-->
-        <CharacterList v-if="isServerSelected" />
-    </div>
+    <v-app>
+        <v-container>
+            <ThemeSelector />         
+            <ServerSelection @server-selected="handleServerSelected" />
+            <CharacterList v-if="isServerSelected" />            
+        </v-container>
+    </v-app>
 </template>
 
 <style scoped>

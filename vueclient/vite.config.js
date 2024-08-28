@@ -5,7 +5,10 @@ import vue from '@vitejs/plugin-vue'
 
 
 //target: 'http://localhost:3000',//ExpressJs
-//target: 'http://localhost:7210',//DotNetCoreApi
+
+// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+import vuetify from 'vite-plugin-vuetify'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
