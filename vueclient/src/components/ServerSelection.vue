@@ -1,8 +1,43 @@
+<template>
+    <v-menu v-model="isDropdownVisible" offset-y close-on-content-click>
+        <!-- Activator for the dropdown -->
+
+
+        <template #activator="{ props, on }">
+            <v-btn text v-bind="props" @click="on">
+                <v-icon icon="mdi-server" class="mr-2" />
+                {{ localSelectedServer.name }} <!-- Display the selected server name -->
+            </v-btn>
+        </template>
+
+        <!-- Dropdown content -->
+        <v-list>
+            <v-list-item v-for="(server, index) in servers"
+                         :key="index"
+                         @click="confirmServer(server)"
+                         ripple
+                         class="align-center">
+
+                <!-- я так и не понял, почему не получалось горизонтально... пришлось добавлять вот таким образом -->
+                <template v-slot:prepend>
+                    <v-list-item-action>
+                        <v-icon v-if="localSelectedServer.name === server.name"
+                                icon="mdi-check"
+                                class="mr-2" />
+                        <v-icon v-if="localSelectedServer.name !== server.name"
+                                class="mr-2" />
+                    </v-list-item-action>
+                </template>
+                <v-list-item-title>{{ server.name }}</v-list-item-title>                
+            </v-list-item>
+        </v-list>
+    </v-menu>
+</template>
+
 <script setup>
     import { ref, defineEmits } from 'vue';
     import { selectedServer } from '../selectedServer';
     import { DOTNET_SERVER, EXPRESS_SERVER } from '../config';
-    import { VBtn, VRadioGroup, VRadio } from 'vuetify/components';
 
     // Define the events that this component will emit
     const emit = defineEmits(['server-selected']);
@@ -13,40 +48,28 @@
         // Add more servers as needed
     ]);
 
-    const localSelectedServer = ref(null);
+    const localSelectedServer = ref(servers.value[0]); // Set the first server as the default
+    const isDropdownVisible = ref(false);
 
-    const confirmServer = () => {
-        if (localSelectedServer.value) {
-            emit('server-selected', localSelectedServer.value);
-            selectedServer.value = localSelectedServer.value.api;
-        } else {
-            alert('Please select a server.');
-        }
+    const confirmServer = (server) => {
+        localSelectedServer.value = server;
+        emit('server-selected', server);
+        selectedServer.value = server.api;
+        isDropdownVisible.value = false; // Close the dropdown after selection
     };
 </script>
 
-<template>
-    <v-container>
-        <v-card class="pa-5" outlined>
-            <v-card-title>Select a Server</v-card-title>
-            <v-card-text>
-                <v-radio-group v-model="localSelectedServer" :mandatory="false">
-                    <v-radio v-for="(server, index) in servers"
-                             :key="index"
-                             :label="server.name + ' (' + server.api + ')'"
-                             :value="server" />
-                </v-radio-group>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click="confirmServer">Confirm Server</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-container>
-</template>
-
 <style scoped>
-    .v-radio {
-        margin-bottom: 10px;
+    /* Scoped styles to adjust the layout */
+    .d-flex {
+        display: flex;
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .mr-2 {
+        margin-right: 8px; /* Adjust margin as needed */
     }
 </style>
