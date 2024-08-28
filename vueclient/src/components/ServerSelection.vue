@@ -2,12 +2,14 @@
     import { ref, defineEmits } from 'vue';
     import { selectedServer } from '../selectedServer';
     import { DOTNET_SERVER, EXPRESS_SERVER } from '../config';
+    import { VBtn, VRadioGroup, VRadio } from 'vuetify/components';
+
     // Define the events that this component will emit
     const emit = defineEmits(['server-selected']);
 
     const servers = ref([
-        { name: 'ASP.NET Core Web API', address: 'https://localhost:7210', api: DOTNET_SERVER   },
-        { name: 'Express.js Server'   , address: 'http://localhost:3000' , api: EXPRESS_SERVER }
+        { name: 'ASP.NET Core Web API', address: 'https://localhost:7210', api: DOTNET_SERVER },
+        { name: 'Express.js Server', address: 'http://localhost:3000', api: EXPRESS_SERVER }
         // Add more servers as needed
     ]);
 
@@ -15,8 +17,8 @@
 
     const confirmServer = () => {
         if (localSelectedServer.value) {
-            emit('server-selected', localSelectedServer.value);             
-            selectedServer.value = localSelectedServer.value.api; 
+            emit('server-selected', localSelectedServer.value);
+            selectedServer.value = localSelectedServer.value.api;
         } else {
             alert('Please select a server.');
         }
@@ -24,24 +26,27 @@
 </script>
 
 <template>
-    <div>
-        <h2>Select a Server</h2>
-        <div class="server-options">
-            <label v-for="(server, index) in servers" :key="index" class="server-option">
-                <input type="radio" v-model="localSelectedServer" :value="server"> {{ server.name }} ({{ server.api }})
-            </label>
-        </div>
-        <button @click="confirmServer">Confirm Server</button>
-    </div>
+    <v-container>
+        <v-card class="pa-5" outlined>
+            <v-card-title>Select a Server</v-card-title>
+            <v-card-text>
+                <v-radio-group v-model="localSelectedServer" :mandatory="false">
+                    <v-radio v-for="(server, index) in servers"
+                             :key="index"
+                             :label="server.name + ' (' + server.api + ')'"
+                             :value="server" />
+                </v-radio-group>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click="confirmServer">Confirm Server</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-container>
 </template>
 
 <style scoped>
-    .server-options {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .server-option {
+    .v-radio {
         margin-bottom: 10px;
     }
 </style>
