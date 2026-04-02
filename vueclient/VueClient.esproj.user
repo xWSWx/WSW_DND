@@ -7,7 +7,7 @@
   "type": "chrome",
   "request": "launch",
   "url": "http://localhost:5173",
-  "webRoot": "E:\\repos\\DND_WSW\\DND_WSW\\VueClient"
+  "webRoot": "E:\\repos\\DND_WSW\\VueClient"
 }</LaunchJsonTarget>
   </PropertyGroup>
 </Project>

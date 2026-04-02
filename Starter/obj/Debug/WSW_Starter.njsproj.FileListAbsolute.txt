@@ -1,3 +1,6 @@
 E:\repos\DND_WSW\DND_WSW\Starter\obj\Debug\WSW_Starter.njsproj.AssemblyReference.cache
 E:\repos\DND_WSW\DND_WSW\Starter\obj\Debug\WSW_Starter.njsproj.CoreCompileInputs.cache
 E:\repos\DND_WSW\DND_WSW\Starter\bin\Microsoft.NodejsTools.WebRole.dll
+E:\repos\DND_WSW\Starter\obj\Debug\WSW_Starter.njsproj.AssemblyReference.cache
+E:\repos\DND_WSW\Starter\obj\Debug\WSW_Starter.njsproj.CoreCompileInputs.cache
+E:\repos\DND_WSW\Starter\bin\Microsoft.NodejsTools.WebRole.dll

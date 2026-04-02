@@ -1,13 +1,16 @@
 <template>
     <v-menu v-model="isDropdownVisible" offset-y close-on-content-click>
         <!-- Activator for the dropdown -->
-
-
-        <template #activator="{ props, on }">
-            <v-btn text v-bind="props" @click="on">
-                <v-icon icon="mdi-server" class="mr-2" />
-                {{ localSelectedServer.name }} <!-- Display the selected server name -->
-            </v-btn>
+        
+        <template #activator="{ props: menuProps }" close-delay="5000">
+            <v-tooltip>
+                <template #activator="{ props: tooltipProps }">
+                    <v-btn icon v-bind="{...menuProps, ...tooltipProps}">
+                        <v-icon icon="mdi-server" class="mr-2" />                        
+                    </v-btn>
+                </template>
+                Selected server: {{ localSelectedServer.name }}
+            </v-tooltip>
         </template>
 
         <!-- Dropdown content -->
@@ -48,7 +51,7 @@
         // Add more servers as needed
     ]);
 
-    const localSelectedServer = ref(servers.value[0]); // Set the first server as the default
+    const localSelectedServer = ref({name: "No Selected"}); // Set the first server as the default
     const isDropdownVisible = ref(false);
 
     const confirmServer = (server) => {

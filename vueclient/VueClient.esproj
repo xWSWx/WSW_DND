@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\api\" />
+    <Folder Include="src\components\DockingWSW\" />
+    <Folder Include="src\components\Новая папка\" />
     <Folder Include="src\Models\" />
   </ItemGroup>
 </Project>
